@@ -18,12 +18,40 @@ def login():
 
     with open('users.json') as usersTemp:
         users = json.load(usersTemp)
-        cont = 0
-        for user in users:            
+        for user in users:    
             if user['username'] == username and user['password'] == password:
                 return render_template('user_screen.html')
             
-            if cont >= len(users) or user['username'] not in users or user['password'] != password:
-                return render_template('error.html', error='Username/Password incorrect')
+            if user not in users:
+                print(f"{user}")
+                return render_template('error.html', error='Username incorrect/not found')
             
     return redirect('/')
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    if request.method == 'POST':
+        username = request.form.get('user')
+        password = request.form.get('password')
+        confirmation = request.form.get('confirmation')
+
+        if confirmation != password:
+            return render_template('error.html', error='Passwords different')
+        
+        usuario = {'username': username,'password': password}
+        
+        #checagem de usuarios e adição dele ao JSON
+        with open('users.json') as usersTemp:
+            users = json.load(usersTemp)
+            cont = 0
+            for user in users:            
+                if user['username'] == username:
+                    return render_template('error.html', error='Username already in use')
+                else:
+                    users.append(usuario)
+                    break
+            with open('users.json', 'w') as usuarioTemp:
+                json.dump(users, usuarioTemp, indent=4)
+        return redirect('/')
