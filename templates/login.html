@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+<body>
+    <div id="form_back">
+        <h1>LOGIN</h1>
+        <div id="form_front">
+            <form action="/login" id="login" method="post" autocomplete="off">
+                <label for="nome">NOME</label>
+                <input type="text" name="user" id="user" required placeholder="Username"><br><br>
+                <label for="senha" id="senha">SENHA</label>
+                <input type="password" name="password" id="password" required placeholder="Password"><br><br>
+                <button type="submit" id="btn_login">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>LOGIN
+
+                </button>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+{% endblock %}
