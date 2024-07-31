@@ -1,7 +1,111 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div class="container">
+    <main>
+        <section id="pre-made-workouts">
+            <h2 id="title">Pre-made Workouts</h2>
+            <div class="workout-list">
+                <div class="workout-item">
+                    <h2>Workout A</h2>
+                    <h3>5 days a week, 2 days resting</h3>
+                    <ul>
+                        <li id="title">Chest</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[0] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                        <li id="title">Back</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[1] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                        <li id="title">Legs</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[2] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                        <li id="title">Arms</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[3] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                        <li id="title">Shoulders</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[4] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                    </ul>
+                    <form action="/user_screen" method="post">
+                        <button class="choose-button" name="button" value="button-a">Choose Workout A</button>
+                    </form>
+                    
+                </div>
+                <div class="workout-item">
+                    <h2>Workout B</h2>
+                    <h3>4 days a week, 3 days resting</h3>
+                    <ul>
+                        <li id="title">Chest and Biceps</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[5] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                        <li id="title">Back and Triceps</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[6] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                        <li id="title">Legs</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[7] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                        <li id="title">Shoulders</li>
+                        <ol class="exercise-list">
+                            {% for exercise in exercises[8] %}
+                                <li>{{ exercise }}</li>
+                            {% endfor %}
+                        </ol class="exercise-list">
+                    </ul>
+                    <form action="/user_screen" method="post">                    
+                        <button class="choose-button" name="button" value="button-b">Choose Workout B</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section id="custom-workout">
+            <h2>Create Your Workout</h2>
+            <form id="custom-workout-form">
+                <div class="form-group">
+                    <label for="workout-name">Workout Name:</label>
+                    <input type="text" id="workout-name" name="workout-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="exercise">Add Exercise:</label>
+                    <input type="text" id="exercise" name="exercise">
+                    <button type="button">Add</button>
+                </div>
+                <ul id="exercise-list">
+                    
+                </ul>
+                <button type="submit">Save Workout</button>
+            </form>
+        </section>
+    </main>
 
-Logado papae
-
+    <section id="my-workouts">
+        <h2>My Workouts</h2>
+        <ul>
+            {{ workout }}
+        </ul>
+    </section>
+</div>
 {% endblock %}
