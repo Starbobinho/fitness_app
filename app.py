@@ -4,8 +4,6 @@ import json
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'starbobinho'
 
-
-
 @app.route('/')
 def home():
     return render_template('login.html')
@@ -20,7 +18,7 @@ def login():
         users = json.load(usersTemp)
         for user in users:    
             if user['username'] == username and user['password'] == password:
-                return render_template('user_screen.html')
+                return redirect('/user_screen')
             
             if user not in users:
                 print(f"{user}")
@@ -55,3 +53,36 @@ def register():
             with open('users.json', 'w') as usuarioTemp:
                 json.dump(users, usuarioTemp, indent=4)
         return redirect('/')
+    
+@app.route('/user_screen', methods=['POST', 'GET'])
+def user_screen():
+    method = request.method
+    if method == 'GET':
+        with open('workouts.json') as workoutsTemp:
+            workouts = json.load(workoutsTemp)
+            exercises = []
+            for workout in workouts:
+                for muscle in workout.values():
+                    if isinstance(muscle, int):
+                        continue
+                    else:
+                        exercises.append(muscle)
+            
+            return render_template('user_screen.html', exercises=exercises)
+    if method == 'POST':
+        with open('workouts.json') as workoutsTemp:
+            workouts = json.load(workoutsTemp)
+            exercises = []
+            for workout in workouts:
+                for muscle in workout.values():
+                    if isinstance(muscle, int):
+                        continue
+                    else:
+                        exercises.append(muscle)
+            button_clicked = request.form.get('button')
+            if button_clicked == 'button-a':
+                print("Botão a")
+                return render_template('user_screen.html', exercises=exercises, workout="Workout A")
+            elif button_clicked == 'button-b':
+                print("Botão b")
+                return render_template('user_screen.html', exercises=exercises, workout="Workout B")
