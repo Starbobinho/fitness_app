@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness_App</title>
-    <link rel="stylesheet" href="static\style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div id="nav_bar">
-        <nav><ul><a href="/register" id="nav-button">Register</a> <a href="/" id="nav-button">Log in</a></ul></nav>
+        {% if not logged_in %}
+            <nav><ul><a href="/register" id="nav-button">Register</a> <a href="/" id="nav-button">Log in</a></ul></nav>
+        {% else %}
+            <nav><ul><a href="/make_workout" id="nav-button">Make Workout</a> <a href="/goals" id="nav-button">Goals</a> <a href="/logout" id="nav-button">Logout</a></ul></nav>
+        {% endif %}
     </div>
     {% block body %}{% endblock %}
 </body>
