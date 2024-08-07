@@ -3,7 +3,6 @@
 
 {% block body %}
 
-<body>
     <div id="form_back">
         <h1>LOGIN</h1>
         <div id="form_front">
@@ -12,7 +11,7 @@
                 <input type="text" name="user" id="user" required placeholder="Username"><br><br>
                 <label for="senha" id="senha">Password</label>
                 <input type="password" name="password" id="password" required placeholder="Password"><br><br>
-                <button type="submit" id="btn_login">
+                <button type="submit" id="btn_login" onclick="hide()">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -22,7 +21,5 @@
             </form>
         </div>
     </div>
-
-</body>
 
 {% endblock %}
