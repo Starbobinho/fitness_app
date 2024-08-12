@@ -40,7 +40,6 @@ def login():
     return render_template('error.html', error='Username incorrect/not found')
 
 @app.route('/user_screen', methods=['POST', 'GET'])
-@app.route('/user_screen', methods=['POST', 'GET'])
 def user_screen():
     if 'username' not in session:
         return redirect('/')
@@ -145,6 +144,17 @@ def delete_workout(workout_id):
         Workout.delete_by_id(workout_id)
 
     return redirect('/user_screen')
+
+#@app.route('/diet_tracking', methods=['GET', 'POST'])
+#def diet_tracking():
+#    method = request.method
+#
+#    diet = Diet()
+#
+#    if method == 'GET':
+#        render_template('diet_tracking.html', diet=diet)
+#    if method == 'POST':
+
 
 if __name__ == '__main__':
     app.run(debug=True)
