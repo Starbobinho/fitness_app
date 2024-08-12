@@ -102,16 +102,5 @@
             "Crossover",
             "Supino Declinado"
         ]
-    },
-    {
-        "id": 4,
-        "username": "leleco",
-        "workout_name": "Peitxo",
-        "exercises": [
-            "supeitxo inclinado",
-            "packpeitxo",
-            "supeitxo no reto",
-            "pullpeitxo"
-        ]
     }
 ]

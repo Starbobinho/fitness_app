@@ -6,12 +6,12 @@
         <section id="pre-made-workouts">
             <h2 id="title">Pre-made Workouts</h2>
             <div class="workout-list">
+                {% for workout in pre_made_workouts %}
                 <div class="workout-item">
-                    <h2>Workout A</h2>
-                    <h3>5 days a week, 2 days resting</h3>
+                    <h2>Workout {{ workout.id + 1 }}</h2>
                     <ul>
-                        {% for muscle_group, exercises_list in pre_made_workouts[0].items() %}
-                            {% if muscle_group not in ['id', 'users'] %}
+                        {% for muscle_group, exercises_list in workout.__dict__.items() %}
+                            {% if muscle_group not in ['id', 'username', 'workout_name', 'exercises', 'users'] %}
                                 <li id="title">{{ muscle_group }}</li>
                                 <ol class="exercise-list">
                                     {% for exercise in exercises_list %}
@@ -22,28 +22,10 @@
                         {% endfor %}
                     </ul>
                     <form action="/user_screen" method="post">
-                        <button class="choose-button" name="button" value="button-a">Choose Workout A</button>
+                        <button class="choose-button" name="button" value="button-{{ workout.id }}">Choose Workout {{ workout.id + 1 }}</button>
                     </form>
                 </div>
-                <div class="workout-item">
-                    <h2>Workout B</h2>
-                    <h3>4 days a week, 3 days resting</h3>
-                    <ul>
-                        {% for muscle_group, exercises_list in pre_made_workouts[1].items() %}
-                            {% if muscle_group not in ['id', 'users'] %}
-                                <li id="title">{{ muscle_group }}</li>
-                                <ol class="exercise-list">
-                                    {% for exercise in exercises_list %}
-                                        <li>{{ exercise }}</li>
-                                    {% endfor %}
-                                </ol>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                    <form action="/user_screen" method="post">
-                        <button class="choose-button" name="button" value="button-b">Choose Workout B</button>
-                    </form>
-                </div>
+                {% endfor %}
             </div>
         </section>
     </main>
