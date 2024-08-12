@@ -1,6 +1,15 @@
 [
     {
         "id": 0,
+        "username": null,
+        "workout_name": null,
+        "exercises": [],
+        "users": [
+            "teste",
+            "teste",
+            "teste",
+            "teste"
+        ],
         "Chest": [
             "Bench press",
             "Cable Crossovers",
@@ -35,16 +44,14 @@
             "Lateral Raises",
             "Front Raises",
             "Rear Delt Flyes"
-        ],
-        "users": [
-            "teste",
-            "teste",
-            "teste",
-            "teste"
         ]
     },
     {
         "id": 1,
+        "username": null,
+        "workout_name": null,
+        "exercises": [],
+        "users": [],
         "Chest": [
             "Bench press",
             "Cable Crossovers",
@@ -75,20 +82,6 @@
             "Lateral Raises",
             "Front Raises",
             "Rear Delt Flyes"
-        ],
-        "users": []
-    },
-    {
-        "id": 2,
-        "username": "teste",
-        "workout_name": "Arms Day",
-        "exercises": [
-            "Rosca Direta",
-            "Banco Scott",
-            "Rosca Banco Inclinado",
-            "Triceps Corda",
-            "Triceps Testa",
-            "Triceps Frances"
         ]
     },
     {
@@ -101,6 +94,21 @@
             "Crucifixo",
             "Crossover",
             "Supino Declinado"
-        ]
+        ],
+        "users": []
+    },
+    {
+        "id": 4,
+        "username": "teste",
+        "workout_name": "Leg day",
+        "exercises": [
+            "Cadeira Flexora",
+            "Mesa Flexora",
+            "Cadeira extensora",
+            "Leg press",
+            "Panturrilha sentado",
+            "Panturrilha em p\u00e9"
+        ],
+        "users": []
     }
 ]
