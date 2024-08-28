@@ -11,7 +11,7 @@
         {% if not logged_in %}
             <nav><ul><a href="/register" id="nav-button">Register</a> <a href="/" id="nav-button">Log in</a></ul></nav>
         {% else %}
-            <nav><ul><a href="/make_workout" id="nav-button">Make Workout</a> <a href="/goals" id="nav-button">Goals</a> <a href="/logout" id="nav-button">Logout</a></ul></nav>
+            <nav><ul><a href="/user_screen" id="nav-button">Main</a> <a href="/make_workout" id="nav-button">Make Workout</a> <a href="/diet" id="nav-button">Diet</a>  <a href="/logout" id="nav-button">Logout</a></ul></nav>
         {% endif %}
     </div>
     {% block body %}{% endblock %}
