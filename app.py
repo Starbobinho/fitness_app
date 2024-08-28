@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, session
 from models.user import User
 from models.workout import Workout
 from models.diet import Diet
+from models.goals import Goal
 import requests
 
 app = Flask(__name__)
@@ -39,6 +40,7 @@ def login():
     user = User.find_by_username(username)
     if user and user.password == password:
         session['username'] = username
+        session['user_id'] = username
         return redirect('/user_screen')
     
     return render_template('error.html', error='Username incorrect/not found')
@@ -250,9 +252,40 @@ def delete_food(fdc_id):
 
     return redirect('/diet')
 
-@app.route('/goals', methods=['POST', 'GET'])
+@app.route('/goals', methods=['GET', 'POST'])
 def goals():
-    return render_template('goals.html', logged_in=True)
+    user_id = session.get('user_id')  # Obtém o ID do usuário logado da sessão
+    if not user_id:
+        return redirect('/login')  # Redireciona para a página de login se não estiver logado
+
+    if request.method == 'POST':
+        action = request.form.get('action')
+        goal_id = request.form.get('goal_id')
+
+        if action == 'add':
+            Goal.add_goal(
+                user_id=user_id,
+                title=request.form['title'],
+                description=request.form['description'],
+                deadline=request.form['deadline']
+            )
+        elif action == 'edit' and goal_id:
+            Goal.edit_goal(
+                user_id=user_id,
+                goal_id=int(goal_id),
+                title=request.form.get('title'),
+                description=request.form.get('description'),
+                deadline=request.form.get('deadline'),
+                status=request.form.get('status')
+            )
+        elif action == 'delete' and goal_id:
+            Goal.remove_goal(user_id=user_id, goal_id=int(goal_id))
+
+        return redirect('/goals')
+
+    goals_data = Goal.load_goals()
+    user_goals = goals_data.get(user_id, [])
+    return render_template('goals.html', goals=user_goals, logged_in=True)
 
 
 if __name__ == '__main__':

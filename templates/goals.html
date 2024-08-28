@@ -1,9 +1,58 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
 <section id="goals">
-    <h1>TODO</h1>
-</section>
+    <h1>My Goals</h1>
 
+    <ul>
+        {% for goal in goals %}
+        <li>
+            <strong>{{ goal.title }}</strong> - {{ goal.status }}
+            <p>{{ goal.description }}</p>
+            <p>Deadline: {{ goal.deadline }}</p>
+            <form action="{{ url_for('goals') }}" method="post">
+                <input type="hidden" name="goal_id" value="{{ goal.goal_id }}">
+                <input type="hidden" name="action" value="edit">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" value="{{ goal.title }}" required><br>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required>{{ goal.description }}</textarea><br>
+
+                <label for="deadline">Deadline:</label>
+                <input type="date" id="deadline" name="deadline" value="{{ goal.deadline }}" required><br>
+
+                <label for="status">Status:</label>
+                <select id="status" name="status">
+                    <option value="in progress" {% if goal.status == 'in progress' %}selected{% endif %}>In Progress</option>
+                    <option value="completed" {% if goal.status == 'completed' %}selected{% endif %}>Completed</option>
+                </select><br>
+
+                <input type="submit" value="Edit Goal">
+            </form>
+
+            <form action="{{ url_for('goals') }}" method="post">
+                <input type="hidden" name="goal_id" value="{{ goal.goal_id }}">
+                <input type="hidden" name="action" value="delete">
+                <input type="submit" value="Remove Goal">
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add New Goal</h2>
+    <form action="{{ url_for('goals') }}" method="post">
+        <input type="hidden" name="action" value="add">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea><br>
+
+        <label for="deadline">Deadline:</label>
+        <input type="date" id="deadline" name="deadline" required><br>
+
+        <input type="submit" value="Add Goal">
+    </form>
+</section>
 {% endblock %}
