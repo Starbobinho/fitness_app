@@ -7,118 +7,6 @@
             {
                 "name": "Protein",
                 "unit": "G",
-                "value": 21.4
-            },
-            {
-                "name": "Total lipid (fat)",
-                "unit": "G",
-                "value": 1.79
-            },
-            {
-                "name": "Carbohydrate, by difference",
-                "unit": "G",
-                "value": 0.0
-            },
-            {
-                "name": "Energy",
-                "unit": "KCAL",
-                "value": 107
-            }
-        ],
-        "username": "rob"
-    },
-    {
-        "data_type": "Branded",
-        "description": "RICE",
-        "fdc_id": 2077766,
-        "nutrients": [
-            {
-                "name": "Protein",
-                "unit": "G",
-                "value": 6.67
-            },
-            {
-                "name": "Total lipid (fat)",
-                "unit": "G",
-                "value": 0.0
-            },
-            {
-                "name": "Carbohydrate, by difference",
-                "unit": "G",
-                "value": 77.8
-            },
-            {
-                "name": "Energy",
-                "unit": "KCAL",
-                "value": 356
-            }
-        ],
-        "username": "rob"
-    },
-    {
-        "data_type": "Branded",
-        "description": "BREAD",
-        "fdc_id": 2071481,
-        "nutrients": [
-            {
-                "name": "Protein",
-                "unit": "G",
-                "value": 10.7
-            },
-            {
-                "name": "Total lipid (fat)",
-                "unit": "G",
-                "value": 5.36
-            },
-            {
-                "name": "Carbohydrate, by difference",
-                "unit": "G",
-                "value": 66.1
-            },
-            {
-                "name": "Energy",
-                "unit": "KCAL",
-                "value": 357
-            }
-        ],
-        "username": "rob"
-    },
-    {
-        "data_type": "Branded",
-        "description": "CHEESE",
-        "fdc_id": 1943515,
-        "nutrients": [
-            {
-                "name": "Protein",
-                "unit": "G",
-                "value": 21.1
-            },
-            {
-                "name": "Total lipid (fat)",
-                "unit": "G",
-                "value": 24.6
-            },
-            {
-                "name": "Carbohydrate, by difference",
-                "unit": "G",
-                "value": 2.46
-            },
-            {
-                "name": "Energy",
-                "unit": "KCAL",
-                "value": 331
-            }
-        ],
-        "username": "rob"
-    },
-    {
-        "data_type": "Branded",
-        "description": "CHICKEN",
-        "fdc_id": 2038064,
-        "nutrients": [
-            {
-                "name": "Protein",
-                "unit": "G",
                 "value": 21.4,
                 "total_value": 32.1
             },
@@ -275,5 +163,71 @@
         ],
         "username": "baldoino",
         "quantity": 100.0
+    },
+    {
+        "data_type": "Branded",
+        "description": "CHICKEN",
+        "fdc_id": 2038064,
+        "nutrients": [
+            {
+                "name": "Protein",
+                "unit": "G",
+                "value": 21.4,
+                "total_value": 53.5
+            },
+            {
+                "name": "Total lipid (fat)",
+                "unit": "G",
+                "value": 1.79,
+                "total_value": 4.475
+            },
+            {
+                "name": "Carbohydrate, by difference",
+                "unit": "G",
+                "value": 0.0,
+                "total_value": 0.0
+            },
+            {
+                "name": "Energy",
+                "unit": "KCAL",
+                "value": 107,
+                "total_value": 267.5
+            }
+        ],
+        "username": "rob",
+        "quantity": 250.0
+    },
+    {
+        "data_type": "Branded",
+        "description": "RICE",
+        "fdc_id": 2077766,
+        "nutrients": [
+            {
+                "name": "Protein",
+                "unit": "G",
+                "value": 6.67,
+                "total_value": 20.01
+            },
+            {
+                "name": "Total lipid (fat)",
+                "unit": "G",
+                "value": 0.0,
+                "total_value": 0.0
+            },
+            {
+                "name": "Carbohydrate, by difference",
+                "unit": "G",
+                "value": 77.8,
+                "total_value": 233.4
+            },
+            {
+                "name": "Energy",
+                "unit": "KCAL",
+                "value": 356,
+                "total_value": 1068.0
+            }
+        ],
+        "username": "rob",
+        "quantity": 300.0
     }
 ]
