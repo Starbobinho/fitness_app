@@ -1,9 +1,13 @@
 from flask import Flask, render_template, redirect, request, session
 from models.user import User
 from models.workout import Workout
+from models.diet import Diet
+import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'starbobinho'
+
+api_key = 'iKAAv5nhVv9vmVU2haYAjRMUwhWYfR4C6hoGyja7'
 
 @app.route('/')
 def home():
@@ -145,15 +149,108 @@ def delete_workout(workout_id):
 
     return redirect('/user_screen')
 
-#@app.route('/diet_tracking', methods=['GET', 'POST'])
-#def diet_tracking():
-#    method = request.method
-#
-#    diet = Diet()
-#
-#    if method == 'GET':
-#        render_template('diet_tracking.html', diet=diet)
-#    if method == 'POST':
+@app.route('/diet', methods=['GET', 'POST'])
+def diet_tracking():
+    food_info = None
+    error_message = None
+    username = session.get('username')
+
+    if not username:
+        return redirect('/')
+
+    diet = Diet(username)  # Inicializa a dieta do usuário atual
+
+    if request.method == 'POST':
+        if 'search' in request.form:
+            food_name = request.form.get('food_name')
+
+            # Endpoint da API
+            url = 'https://api.nal.usda.gov/fdc/v1/foods/search'
+
+            # Parâmetros da requisição
+            params = {
+                'api_key': api_key,
+                'query': food_name,
+                'pageSize': 1
+            }
+
+            # Fazendo a requisição
+            response = requests.get(url, params=params)
+
+            if response.status_code == 200:
+                data = response.json()
+                if data['foods']:
+                    food_info = data['foods'][0]
+
+                    # Filtrando os nutrientes desejados
+                    desired_nutrients = ['Energy', 'Protein', 'Total lipid (fat)', 'Carbohydrate, by difference']
+                    nutrients = [
+                        {
+                            'name': nutrient['nutrientName'],
+                            'value': nutrient['value'],
+                            'unit': nutrient['unitName'],
+                            'total_value': 0  # Inicializa 'total_value'
+                        }
+                        for nutrient in food_info['foodNutrients']
+                        if nutrient['nutrientName'] in desired_nutrients
+                    ]
+
+                    food_info = {
+                        'description': food_info['description'],
+                        'data_type': food_info['dataType'],
+                        'fdc_id': food_info['fdcId'],
+                        'nutrients': nutrients
+                    }
+
+                    # Armazenar o food_info na sessão
+                    session['food_info'] = food_info
+                else:
+                    error_message = 'No food found.'
+            else:
+                error_message = f'Error: {response.status_code}'
+
+        elif 'add' in request.form and 'food_info' in session:
+            quantity = float(request.form.get('quantity', 0))  # Obtém a quantidade fornecida
+            diet.add_food(session['food_info'], quantity)
+            # Remove food_info da sessão após adicionar
+            session.pop('food_info', None)
+
+    # Calcula as calorias totais
+    total_calories = sum(
+        (nutrient.get('total_value', 0) for food in diet.foods for nutrient in food['nutrients'] if nutrient['name'] == 'Energy')
+    )
+
+    # Recupera informações armazenadas na sessão
+    if 'food_info' in session:
+        food_info = session['food_info']
+
+    return render_template('diet.html', food_info=food_info, error_message=error_message, diet=diet.foods, total_calories=total_calories, logged_in=True)
+
+@app.route('/edit_food/<int:fdc_id>', methods=['POST'])
+def edit_food(fdc_id):
+    username = session.get('username')
+    if not username:
+        return redirect('/')
+
+    new_quantity = float(request.form.get('quantity', 0))
+
+    diet = Diet(username)
+    diet.edit_food(fdc_id, new_quantity)
+
+    return redirect('/diet')
+
+@app.route('/delete_food/<int:fdc_id>', methods=['POST'])
+def delete_food(fdc_id):
+    username = session.get('username')
+    if not username:
+        return redirect('/')
+
+    diet = Diet(username)
+    diet.delete_food(fdc_id)
+
+    return redirect('/diet')
+
+
 
 
 if __name__ == '__main__':

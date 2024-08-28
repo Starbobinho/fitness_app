@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<section id="diet">
+    <h1>Food Nutrition Info</h1>
+    <form method="post">
+        <label for="food_name">Enter a food name:</label>
+        <input type="text" id="food_name" name="food_name" required>
+        <button type="submit" name="search">Get Nutrition Info</button>
+    </form>
+
+    {% if food_info %}
+        <h2>Food Information</h2>
+        <p><strong>Description:</strong> {{ food_info.description }}</p>
+        <p><strong>Data Type:</strong> {{ food_info.data_type }}</p>
+        <p><strong>FDC ID:</strong> {{ food_info.fdc_id }}</p>
+        <h3>Nutrients:</h3>
+        <ul>
+            {% for nutrient in food_info.nutrients %}
+                <li>{{ nutrient.name }}: {{ nutrient.value }} {{ nutrient.unit }}</li>
+            {% endfor %}
+        </ul>
+        <form method="post">
+            <label for="quantity">Enter quantity in grams:</label>
+            <input type="number" id="quantity" name="quantity" step="any" required>
+            <button type="submit" name="add">Add to Diet</button>
+        </form>
+    {% elif error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+
+    <h2>My Diet</h2>
+    <ul>
+        {% for food in diet %}
+            <li>
+                <strong>{{ food.description }}</strong> - {{ food.quantity }} grams:
+                <ul>
+                    {% for nutrient in food.nutrients %}
+                        <li>{{ nutrient.name }}: {{ nutrient.total_value|default(0)|round(2) }} {{ nutrient.unit }}</li>
+                    {% endfor %}
+                </ul>
+                <form method="post" action="/edit_food/{{ food.fdc_id }}">
+                    <label for="edit_quantity_{{ food.fdc_id }}">Edit quantity:</label>
+                    <input type="number" id="edit_quantity_{{ food.fdc_id }}" name="quantity" step="any" required>
+                    <button type="submit" name="edit">Update Quantity</button>
+                </form>
+                <form method="post" action="/delete_food/{{ food.fdc_id }}">
+                    <button type="submit" name="delete">Remove from Diet</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Total Calories</h2>
+    <p>{{ total_calories|round(2) }} KCAL</p>
+</section>
+{% endblock %}

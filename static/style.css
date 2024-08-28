@@ -144,3 +144,14 @@ section#my-workouts{
 li#title{
     font-size: 30px;
 }
+
+section#diet {
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, .4);
+    border-radius: 10px;
+    width: 48%;
+    margin-left: 1%;
+    border: 1px solid #ccc;
+    color: white;
+    padding: 3px;
+}
