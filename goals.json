@@ -1,0 +1,30 @@
+{
+    "rob": [
+        {
+            "goal_id": 1,
+            "user_id": "rob",
+            "title": "Desenvolvimento 30kg",
+            "description": "Desenvolvimento na maquina hammer com 30 kg de cada lado",
+            "deadline": "2024-08-28",
+            "status": "in progress"
+        },
+        {
+            "goal_id": 2,
+            "user_id": "rob",
+            "title": "Eleva\u00e7\u00e3o Lateral 12kg",
+            "description": "Eleva\u00e7\u00e3o Lateral 12kg",
+            "deadline": "2024-08-28",
+            "status": "in progress"
+        }
+    ],
+    "r": [
+        {
+            "goal_id": 1,
+            "user_id": "r",
+            "title": "Leg press 300kg",
+            "description": "300kg Leg Press only 6 rep",
+            "deadline": "2024-09-04",
+            "status": "in progress"
+        }
+    ]
+}
