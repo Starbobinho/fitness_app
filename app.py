@@ -250,7 +250,9 @@ def delete_food(fdc_id):
 
     return redirect('/diet')
 
-
+@app.route('/goals', methods=['POST', 'GET'])
+def goals():
+    return render_template('goals.html', logged_in=True)
 
 
 if __name__ == '__main__':
