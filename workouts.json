@@ -2,14 +2,10 @@
     {
         "id": 0,
         "username": null,
-        "workout_name": null,
+        "workout_name": "Chest",
         "exercises": [],
-        "users": [
-            "teste",
-            "teste",
-            "teste",
-            "teste"
-        ],
+        "users": [],
+        "ratings": [],
         "Chest": [
             "Bench press",
             "Cable Crossovers",
@@ -52,6 +48,7 @@
         "workout_name": null,
         "exercises": [],
         "users": [],
+        "ratings": [],
         "Chest": [
             "Bench press",
             "Cable Crossovers",
@@ -85,7 +82,7 @@
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "username": "t",
         "workout_name": "Peitoral",
         "exercises": [
@@ -95,10 +92,11 @@
             "Crossover",
             "Supino Declinado"
         ],
-        "users": []
+        "users": [],
+        "ratings": []
     },
     {
-        "id": 4,
+        "id": 3,
         "username": "teste",
         "workout_name": "Leg day",
         "exercises": [
@@ -109,6 +107,21 @@
             "Panturrilha sentado",
             "Panturrilha em p\u00e9"
         ],
-        "users": []
+        "users": [],
+        "ratings": []
+    },
+    {
+        "id": 4,
+        "username": "rob1801",
+        "workout_name": "Chest Day",
+        "exercises": [
+            "Supino",
+            "Supino Inclinado",
+            "Crucifixo",
+            "Supino Declinado",
+            "Crossover"
+        ],
+        "users": [],
+        "ratings": []
     }
 ]

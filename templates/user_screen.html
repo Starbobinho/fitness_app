@@ -4,14 +4,14 @@
 <div class="container">
     <main>
         <section id="pre-made-workouts">
-            <h2 id="title">Pre-made Workouts</h2>
+            <h2 id="title">Workouts Available</h2>
             <div class="workout-list">
                 {% for workout in pre_made_workouts %}
                 <div class="workout-item">
                     <h2>Workout {{ workout.id + 1 }}</h2>
                     <ul>
                         {% for muscle_group, exercises_list in workout.__dict__.items() %}
-                            {% if muscle_group not in ['id', 'username', 'workout_name', 'exercises', 'users'] %}
+                            {% if muscle_group not in ['id', 'username', 'workout_name', 'exercises', 'users', 'ratings'] %}
                                 <li id="title">{{ muscle_group }}</li>
                                 <ol class="exercise-list">
                                     {% for exercise in exercises_list %}
@@ -21,9 +21,29 @@
                             {% endif %}
                         {% endfor %}
                     </ul>
+            
+                    <!-- Formulário para avaliar o treino -->
+                    <form action="/rate_workout" method="post">
+                        <label for="rating-{{ workout.id }}">Rate this workout:</label>
+                        <input type="number" id="rating-{{ workout.id }}" name="rating" min="1" max="5" required>
+                        <input type="hidden" name="workout_id" value="{{ workout.id }}">
+                        <button type="submit">Submit Rating</button>
+                    </form>
+            
                     <form action="/user_screen" method="post">
                         <button class="choose-button" name="button" value="button-{{ workout.id }}">Choose Workout {{ workout.id + 1 }}</button>
                     </form>
+
+                    <p>Workout {{ workout.id }} ratings: {{ workout.ratings }}</p>
+
+                    <!-- Exibir média de avaliações -->
+                    <p>Average Rating: 
+                        {% if workout.ratings %}
+                            {{ (sum(workout.ratings) / workout.ratings | length) | round(2) }}
+                        {% else %}
+                            No ratings yet.
+                        {% endif %}
+                    </p>
                 </div>
                 {% endfor %}
             </div>
@@ -46,7 +66,17 @@
                 </li>
             {% endfor %}
         </ul>
-        <h2>Goals</h2>
+        <h2>Workouts from other users:</h2>
+        <ul>
+            {% for workout in all_workouts %}
+                <strong>Workout Name:</strong> {{ workout.workout_name }}
+                <ul>
+                    {% for exercise in workout.exercises %}
+                        <li>{{ exercise }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
     </section>
 </div>
 {% endblock %}

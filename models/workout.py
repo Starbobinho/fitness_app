@@ -1,12 +1,13 @@
 import json
 
 class Workout:
-    def __init__(self, id, username=None, workout_name=None, exercises=None, users=None, **kwargs):
+    def __init__(self, id, username=None, workout_name=None, exercises=None, users=None, ratings=None, **kwargs):
         self.id = id
         self.username = username
         self.workout_name = workout_name
         self.exercises = exercises or []
         self.users = users or []
+        self.ratings = ratings or []
         # Handle any additional attributes from kwargs if needed
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -16,13 +17,7 @@ class Workout:
         try:
             with open('workouts.json') as file:
                 data = json.load(file)
-                workouts = []
-                for workout in data:
-                    # Extract known attributes and any additional attributes
-                    known_attrs = {key: workout[key] for key in ['id', 'username', 'workout_name', 'exercises', 'users'] if key in workout}
-                    additional_attrs = {key: workout[key] for key in workout if key not in known_attrs}
-                    workouts.append(cls(**known_attrs, **additional_attrs))
-                return workouts
+                return [cls(**workout) for workout in data]
         except (FileNotFoundError, json.JSONDecodeError):
             return []
 
