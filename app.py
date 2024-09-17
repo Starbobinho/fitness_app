@@ -61,8 +61,11 @@ def user_screen():
     # Filtra os treinos do usuário
     user_workouts = [workout for workout in workouts if workout.username == username]
 
+    all_workouts = [workout for workout in workouts if workout.id > 1]
+
+    #print(f"WORKOUTS_TESTS:{workouts_tests[2]}\n, USER_WORKOUTS:{user_workouts}\n, PRE_MADE_WORKOUTS{pre_made_workouts}")
     if method == 'GET':
-        return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, logged_in=True)
+        return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, logged_in=True)
     
     if method == 'POST':
         button_clicked = request.form.get('button')
@@ -287,6 +290,29 @@ def goals():
     user_goals = goals_data.get(user_id, [])
     return render_template('goals.html', goals=user_goals, logged_in=True)
 
+@app.route('/rate_workout', methods=['POST'])
+def rate_workout():
+    if 'username' not in session:
+        return redirect('/')
+    
+    # Receber a avaliação e o ID do treino
+    rating = int(request.form.get('rating'))
+    workout_id = int(request.form.get('workout_id'))
+
+    # Encontrar o treino correspondente
+    workout = Workout.find_by_id(workout_id)
+    
+    if workout:
+        # Adicionar a avaliação à lista de ratings
+        workout.ratings.append(rating)
+        
+        print(f"Ratings for workout {workout_id}: {workout.ratings}")
+
+        # Salvar os treinos atualizados
+        workouts = Workout.load_all()
+        Workout.save_all(workouts)
+
+    return redirect('/user_screen')
 
 if __name__ == '__main__':
     app.run(debug=True)

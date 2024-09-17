@@ -26,5 +26,15 @@
             "deadline": "2024-09-04",
             "status": "in progress"
         }
+    ],
+    "rob1801": [
+        {
+            "goal_id": 1,
+            "user_id": "rob1801",
+            "title": "100kg Supino",
+            "description": "Atingir 100kg totais no Supino Reto",
+            "deadline": "2024-10-15",
+            "status": "in progress"
+        }
     ]
 }
