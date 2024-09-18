@@ -2,84 +2,95 @@
     {
         "id": 0,
         "username": null,
-        "workout_name": "Chest",
-        "exercises": [],
+        "workout_name": "Workout 1",
+        "exercises": [
+            [
+                "Chest",
+                "Bench press",
+                "Cable Crossovers",
+                "Chest Dips",
+                "Dumbbell Flyes",
+                "Incline Bench Press"
+            ],
+            [
+                "Back",
+                "Deadlifts",
+                "Pull-ups",
+                "Bent-Over Rows",
+                "Lat Pulldowns",
+                "Seated Rows"
+            ],
+            [
+                "Legs",
+                "Squats",
+                "Leg Press",
+                "Lunges",
+                "Deadlifts",
+                "Leg Curls"
+            ],
+            [
+                "Arms",
+                "Triceps Dips",
+                "Triceps Pushdowns",
+                "Overhead Triceps Extension",
+                "Barbell Curls",
+                "Dumbbell Curls",
+                "Hammer Curls"
+            ],
+            [
+                "Shoulders",
+                "Shoulder Press",
+                "Lateral Raises",
+                "Front Raises",
+                "Rear Delt Flyes"
+            ]
+        ],
         "users": [],
-        "ratings": [],
-        "Chest": [
-            "Bench press",
-            "Cable Crossovers",
-            "Chest Dips",
-            "Dumbbell Flyes",
-            "Incline Bench Press"
-        ],
-        "Back": [
-            "Deadlifts",
-            "Pull-ups",
-            "Bent-Over Rows",
-            "Lat Pulldowns",
-            "Seated Rows"
-        ],
-        "Legs": [
-            "Squats",
-            "Leg Press",
-            "Lunges",
-            "Deadlifts",
-            "Leg Curls"
-        ],
-        "Arms": [
-            "Triceps Dips",
-            "Triceps Pushdowns",
-            "Overhead Triceps Extension",
-            "Barbell Curls",
-            "Dumbbell Curls",
-            "Hammer Curls"
-        ],
-        "Shoulders": [
-            "Shoulder Press",
-            "Lateral Raises",
-            "Front Raises",
-            "Rear Delt Flyes"
-        ]
+        "ratings": []
     },
     {
         "id": 1,
         "username": null,
-        "workout_name": null,
-        "exercises": [],
+        "workout_name": "Workout 2",
+        "exercises": [
+            [
+                "Chest and Biceps",
+                "Bench press",
+                "Cable Crossovers",
+                "Chest Dips",
+                "Incline Bench Press",
+                "Barbell Curls",
+                "Dumbbell Curls",
+                "Hammer Curls"
+            ],
+            [
+                "Back and Triceps",
+                "Pull-ups",
+                "Bent-Over Rows",
+                "Lat Pulldowns",
+                "Seated Rows",
+                "Triceps Dips",
+                "Triceps Pushdowns",
+                "Overhead Triceps Extension"
+            ],
+            [
+                "Legs",
+                "Squats",
+                "Leg Press",
+                "Lunges",
+                "Deadlifts",
+                "Leg Curls"
+            ],
+            [
+                "Shoulders",
+                "Shoulder Press",
+                "Lateral Raises",
+                "Front Raises",
+                "Rear Delt Flyes"
+            ]
+        ],
         "users": [],
-        "ratings": [],
-        "Chest": [
-            "Bench press",
-            "Cable Crossovers",
-            "Chest Dips",
-            "Incline Bench Press",
-            "Barbell Curls",
-            "Dumbbell Curls",
-            "Hammer Curls"
-        ],
-        "Back": [
-            "Pull-ups",
-            "Bent-Over Rows",
-            "Lat Pulldowns",
-            "Seated Rows",
-            "Triceps Dips",
-            "Triceps Pushdowns",
-            "Overhead Triceps Extension"
-        ],
-        "Legs": [
-            "Squats",
-            "Leg Press",
-            "Lunges",
-            "Deadlifts",
-            "Leg Curls"
-        ],
-        "Shoulders": [
-            "Shoulder Press",
-            "Lateral Raises",
-            "Front Raises",
-            "Rear Delt Flyes"
-        ]
+        "ratings": []
     },
     {
         "id": 2,
