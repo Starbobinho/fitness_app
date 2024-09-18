@@ -56,7 +56,7 @@ def user_screen():
     workouts = Workout.load_all()
     
     # Filtra os treinos com id=0 e id=1 para pre_made_workouts
-    pre_made_workouts = [workout for workout in workouts if workout.id in [0, 1]]
+    pre_made_workouts = [[exercise for exercise in group] for workout in workouts if workout.id in [0, 1] for group in workout.exercises]
     
     # Filtra os treinos do usuário
     user_workouts = [workout for workout in workouts if workout.username == username]
@@ -70,6 +70,7 @@ def user_screen():
     if method == 'POST':
         button_clicked = request.form.get('button')
         workout_id = int(button_clicked.split('-')[-1])
+        print(f"Button: {button_clicked}, workout.id: {workout_id}")
         workout = Workout.find_by_id(workout_id)
         if workout and username not in workout.users:
             workout.users.append(username)
@@ -297,8 +298,9 @@ def rate_workout():
     
     # Receber a avaliação e o ID do treino
     rating = int(request.form.get('rating'))
-    workout_id = int(request.form.get('workout_id'))
+    workout_id = request.form.get('workout_id')
 
+    print(workout_id)
     # Encontrar o treino correspondente
     workout = Workout.find_by_id(workout_id)
     

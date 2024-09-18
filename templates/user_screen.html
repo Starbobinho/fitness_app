@@ -8,42 +8,16 @@
             <div class="workout-list">
                 {% for workout in pre_made_workouts %}
                 <div class="workout-item">
-                    <h2>Workout {{ workout.id + 1 }}</h2>
+                    <h2>Workout {{ loop.index }}</h2>
                     <ul>
-                        {% for muscle_group, exercises_list in workout.__dict__.items() %}
-                            {% if muscle_group not in ['id', 'username', 'workout_name', 'exercises', 'users', 'ratings'] %}
-                                <li id="title">{{ muscle_group }}</li>
-                                <ol class="exercise-list">
-                                    {% for exercise in exercises_list %}
-                                        <li>{{ exercise }}</li>
-                                    {% endfor %}
-                                </ol>
-                            {% endif %}
+                        {% for exercise_group in workout %}
+                            {% if loop.index0 == 0 %} <!-- Primeiro item do grupo é o nome do grupo muscular -->
+                                    <li><strong>Muscular Group:</strong> {{ exercise_group }}</li>
+                                {% else %} <!-- Demais itens são os exercícios -->
+                                    <li>{{ exercise_group }}</li>
+                                {% endif %}
                         {% endfor %}
                     </ul>
-            
-                    <!-- Formulário para avaliar o treino -->
-                    <form action="/rate_workout" method="post">
-                        <label for="rating-{{ workout.id }}">Rate this workout:</label>
-                        <input type="number" id="rating-{{ workout.id }}" name="rating" min="1" max="5" required>
-                        <input type="hidden" name="workout_id" value="{{ workout.id }}">
-                        <button type="submit">Submit Rating</button>
-                    </form>
-            
-                    <form action="/user_screen" method="post">
-                        <button class="choose-button" name="button" value="button-{{ workout.id }}">Choose Workout {{ workout.id + 1 }}</button>
-                    </form>
-
-                    <p>Workout {{ workout.id }} ratings: {{ workout.ratings }}</p>
-
-                    <!-- Exibir média de avaliações -->
-                    <p>Average Rating: 
-                        {% if workout.ratings %}
-                            {{ (sum(workout.ratings) / workout.ratings | length) | round(2) }}
-                        {% else %}
-                            No ratings yet.
-                        {% endif %}
-                    </p>
                 </div>
                 {% endfor %}
             </div>
