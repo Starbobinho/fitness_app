@@ -45,8 +45,16 @@
                 "Rear Delt Flyes"
             ]
         ],
-        "users": [],
-        "ratings": []
+        "users": [
+            "r",
+            "teste"
+        ],
+        "ratings": [
+            {
+                "username": "rob1801",
+                "rating": 4
+            }
+        ]
     },
     {
         "id": 1,
@@ -89,25 +97,18 @@
                 "Rear Delt Flyes"
             ]
         ],
-        "users": [],
-        "ratings": []
+        "users": [
+            "rob1801"
+        ],
+        "ratings": [
+            {
+                "username": "rob1801",
+                "rating": 3
+            }
+        ]
     },
     {
         "id": 2,
-        "username": "t",
-        "workout_name": "Peitoral",
-        "exercises": [
-            "Supino Reto",
-            "Supino Inclinado",
-            "Crucifixo",
-            "Crossover",
-            "Supino Declinado"
-        ],
-        "users": [],
-        "ratings": []
-    },
-    {
-        "id": 3,
         "username": "teste",
         "workout_name": "Leg day",
         "exercises": [
@@ -119,10 +120,19 @@
             "Panturrilha em p\u00e9"
         ],
         "users": [],
-        "ratings": []
+        "ratings": [
+            {
+                "username": "rob1801",
+                "rating": 4
+            },
+            {
+                "username": "r",
+                "rating": 2
+            }
+        ]
     },
     {
-        "id": 4,
+        "id": 3,
         "username": "rob1801",
         "workout_name": "Chest Day",
         "exercises": [
@@ -133,6 +143,15 @@
             "Crossover"
         ],
         "users": [],
-        "ratings": []
+        "ratings": [
+            {
+                "username": "rob1801",
+                "rating": 4
+            },
+            {
+                "username": "r",
+                "rating": 5
+            }
+        ]
     }
 ]

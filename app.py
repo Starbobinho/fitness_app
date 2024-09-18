@@ -3,6 +3,7 @@ from models.user import User
 from models.workout import Workout
 from models.diet import Diet
 from models.goals import Goal
+from models.post import Post
 import requests
 
 app = Flask(__name__)
@@ -26,7 +27,7 @@ def register():
         if confirmation != password:
             return render_template('error.html', error='Passwords different')
         
-        new_user = User(username, password)
+        new_user = User(username, password, [])
         if not User.add_user(new_user):
             return render_template('error.html', error='Username already in use')
 
@@ -54,6 +55,9 @@ def user_screen():
     method = request.method
 
     workouts = Workout.load_all()
+
+    for workout in workouts:
+        workout.average_rating = Workout.calculate_average_rating(workout.ratings)
     
     # Filtra os treinos com id=0 e id=1 para pre_made_workouts
     pre_made_workouts = [[exercise for exercise in group] for workout in workouts if workout.id in [0, 1] for group in workout.exercises]
@@ -65,17 +69,36 @@ def user_screen():
 
     #print(f"WORKOUTS_TESTS:{workouts_tests[2]}\n, USER_WORKOUTS:{user_workouts}\n, PRE_MADE_WORKOUTS{pre_made_workouts}")
     if method == 'GET':
-        return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, logged_in=True)
+        if username in [u.username for u in workouts if u.id in [0, 1]]:
+            return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan=1, logged_in=True)
+        else:
+            return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan=2, logged_in=True)
     
     if method == 'POST':
-        button_clicked = request.form.get('button')
-        workout_id = int(button_clicked.split('-')[-1])
-        print(f"Button: {button_clicked}, workout.id: {workout_id}")
+        button_clicked = int(request.form.get('button'))
+        workout_id = button_clicked # Define o treino selecionado (0 ou 1)
         workout = Workout.find_by_id(workout_id)
-        if workout and username not in workout.users:
-            workout.users.append(username)
-            Workout.save_all(workouts)
-        return redirect('/user_screen')
+
+        # Carregar todos os treinos
+        workouts = Workout.load_all()
+
+        # Verificar se o usuário já está em um dos treinos (id=0 ou id=1)
+        for w in workouts:
+            if w.id in [0, 1] and username in w.users:
+                # Remover o usuário do treino onde ele já está
+                w.remove_user(username)
+
+        # Adiciona o usuário ao treino escolhido
+        workout.add_user(username)
+
+        # Atualiza apenas a chave "users" dos treinos modificados
+        for w in workouts:
+            if w.id == workout_id:
+                w.users = workout.users  # Atualiza a lista de usuários no treino escolhido
+
+        # Salva a lista completa de treinos com as modificações
+        Workout.save_all(workouts)
+        return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan=workout_id, logged_in=True)
 
 @app.route('/logout')
 def logout():
@@ -293,28 +316,81 @@ def goals():
 
 @app.route('/rate_workout', methods=['POST'])
 def rate_workout():
-    if 'username' not in session:
-        return redirect('/')
-    
-    # Receber a avaliação e o ID do treino
     rating = int(request.form.get('rating'))
-    workout_id = request.form.get('workout_id')
+    workout_id = int(request.form.get('plan'))
+    is_user_workout = request.form.get('is_user_workout') == 'true'
 
-    print(workout_id)
-    # Encontrar o treino correspondente
+    username = session.get('username')
+    if not username:
+        return redirect('/login')  # Redirecionar para o login se não houver usuário na sessão
+
     workout = Workout.find_by_id(workout_id)
-    
     if workout:
-        # Adicionar a avaliação à lista de ratings
-        workout.ratings.append(rating)
-        
-        print(f"Ratings for workout {workout_id}: {workout.ratings}")
-
-        # Salvar os treinos atualizados
+        workout.add_rating(username, rating)
+        # Atualiza o workout no arquivo JSON
         workouts = Workout.load_all()
+        for w in workouts:
+            if w.id == workout_id:
+                w.ratings = workout.ratings
         Workout.save_all(workouts)
 
+        # Atualiza a avaliação do usuário
+        User.add_rating(username, workout_id, rating)
+
     return redirect('/user_screen')
+
+@app.route('/forum', methods=['GET', 'POST'])
+def forum():
+    if 'username' not in session:
+        return redirect('/login')
+
+    if request.method == 'POST':
+        title = request.form.get('title')
+        content = request.form.get('content')
+        if title and content:
+            create_post()  # Cria o post chamando a função de criação
+            return redirect('/forum')
+
+    posts = Post.load_all()
+    return render_template('forum.html', posts=posts, logged_in=True)
+
+@app.route('/create_post', methods=['POST'])
+def create_post():
+    if 'username' not in session:
+        return redirect('/login')
+
+    username = session['username']
+    title = request.form.get('title')
+    content = request.form.get('content')
+
+    new_post = {
+        'id': Post.generate_new_id(),
+        'title': title,
+        'content': content,
+        'username': username,
+        'replies': []
+    }
+
+    posts = Post.load_all()
+    posts.append(new_post)
+    Post.save_all(posts)
+
+    return redirect('/forum')
+
+@app.route('/reply_post', methods=['POST'])
+def reply_post():
+    if 'username' not in session:
+        return redirect('/login')
+
+    username = session['username']
+    post_id = int(request.form.get('post_id'))
+    content = request.form.get('content')
+
+    Post.add_response(post_id, username, content)
+
+    return redirect('/forum')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

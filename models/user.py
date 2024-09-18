@@ -1,9 +1,10 @@
 import json
 
 class User:
-    def __init__(self, username, password):
+    def __init__(self, username, password, rated=None):
         self.username = username
         self.password = password
+        self.rated = rated or []
 
     @classmethod
     def load_all(cls):
@@ -35,3 +36,17 @@ class User:
         users.append(new_user)
         cls.save_all(users)
         return True
+    
+    @classmethod
+    def add_rating(cls, username, workout_id, rating):
+        users = cls.load_all()
+        user = cls.find_by_username(username)
+        
+        if user:
+            # Remove any existing rating for the workout_id
+            user.rated = [r for r in user.rated if r['id'] != workout_id]
+            # Add the new rating
+            user.rated.append({'id': workout_id, 'rating': rating})
+            cls.save_all(users)
+            return True
+        return False

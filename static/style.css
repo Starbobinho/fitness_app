@@ -166,3 +166,22 @@ section#goals {
     color: white;
     padding: 3px;
 }
+
+#rating-text {
+    font-size: 15pt;
+}
+
+#rating-input {
+    font-size: 15pt;
+}
+
+#forum {
+    backdrop-filter: blur(3px);
+    background-color: rgba(0, 0, 0, .4);
+    border-radius: 10px;
+    width: 98%;
+    margin-left: 1%;
+    border: 1px solid #ccc;
+    color: white;
+    padding: 3px;
+}

@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "title": "New PR",
+        "content": "Today i hit a new PR in bench press, now i'm going to 80kg, let's gooo",
+        "username": "teste",
+        "replies": [
+            {
+                "username": "rob1801",
+                "content": "Nice buddy, let's gooo"
+            },
+            {
+                "username": "r",
+                "content": "Niiiice, keep going"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "New PR Deadlift",
+        "content": "Today i hit a PR in deadlift, next goal is 140kg!!",
+        "username": "rob1801",
+        "replies": [
+            {
+                "username": "r",
+                "content": "Niiiice maan, keep moving forward"
+            }
+        ]
+    }
+]

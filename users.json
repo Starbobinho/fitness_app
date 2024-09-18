@@ -1,26 +1,17 @@
 [
     {
-        "username": "starbob",
-        "password": "123"
-    },
-    {
-        "username": "rob",
-        "password": "456"
-    },
-    {
-        "username": "teste",
-        "password": "teste"
-    },
-    {
         "username": "r",
-        "password": "1"
-    },
-    {
-        "username": "baldoino",
-        "password": "123"
+        "password": "1",
+        "rated": []
     },
     {
         "username": "rob1801",
-        "password": "1801"
+        "password": "1801",
+        "rated": []
+    },
+    {
+        "username": "teste",
+        "password": "teste",
+        "rated": []
     }
 ]
