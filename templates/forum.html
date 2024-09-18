@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<section id="forum">
+    <h1>Forum</h1>
+
+    <!-- Formulário para criar um novo post -->
+    <form action="/create_post" method="post">
+        <label for="post_title">Post Title:</label>
+        <input type="text" id="post_title" name="title" required>
+        <br>
+        <label for="post_content">Post Message:</label>
+        <textarea id="post_content" name="content" required></textarea>
+
+        <button type="submit">Submit Post</button>
+    </form>
+
+    <!-- Lista de posts existentes -->
+    <h2>Posts</h2>
+</section>
+    {% for post in posts %}
+        <div id="forum">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.content }}</p>
+            <p><strong>Posted by:</strong> {{ post.username }}</p>
+
+            <!-- Formulário para responder ao post -->
+            <form action="/reply_post" method="post">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <label for="reply_content_{{ post.id }}">Reply:</label>
+                <textarea id="reply_content_{{ post.id }}" name="content" required></textarea>
+                <button type="submit">Reply</button>
+            </form>
+
+            <!-- Exibir respostas ao post -->
+            <h4>Replies:</h4>
+            {% for reply in post.replies %}
+                <div class="reply">
+                    <p>{{ reply.content }}</p>
+                    <p><strong>Replied by:</strong> {{ reply.username }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+{% endfor %}
+{% endblock %}

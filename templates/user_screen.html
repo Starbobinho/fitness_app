@@ -8,16 +8,38 @@
             <div class="workout-list">
                 {% for workout in pre_made_workouts %}
                 <div class="workout-item">
-                    <h2>Workout {{ loop.index }}</h2>
-                    <ul>
-                        {% for exercise_group in workout %}
-                            {% if loop.index0 == 0 %} <!-- Primeiro item do grupo é o nome do grupo muscular -->
-                                    <li><strong>Muscular Group:</strong> {{ exercise_group }}</li>
-                                {% else %} <!-- Demais itens são os exercícios -->
-                                    <li>{{ exercise_group }}</li>
-                                {% endif %}
-                        {% endfor %}
-                    </ul>
+                    {% if loop.index > 5 %}
+                        <h2>Day {{ loop.index - 5 }}</h2>
+                        <ul>
+                            {% for exercise_group in workout %}
+                                {% if loop.index0 == 0 %} <!-- Primeiro item do grupo é o nome do grupo muscular -->
+                                        <li><strong>Muscular Group:</strong> {{ exercise_group }}</li>
+                                    {% else %} <!-- Demais itens são os exercícios -->
+                                        <li>{{ exercise_group }}</li>
+                                    {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <h2>Day {{ loop.index }}</h2>
+                        <ul>
+                            {% for exercise_group in workout %}
+                                {% if loop.index0 == 0 %} <!-- Primeiro item do grupo é o nome do grupo muscular -->
+                                        <li><strong>Muscular Group:</strong> {{ exercise_group }}</li>
+                                    {% else %} <!-- Demais itens são os exercícios -->
+                                        <li>{{ exercise_group }}</li>
+                                    {% endif %}
+                            {% endfor %}
+                    {% endif %}
+                    {% if loop.index == 5 %}
+                        <form action="/user_screen" method="POST">
+                            <button name="button" type="submit" value="0">Choose Plan 1</button>
+                        </form>
+                    {% endif %}
+                    {% if loop.index == 9 %}
+                        <form action="/user_screen" method="POST">
+                            <button name="button" type="submit" value="1">Choose Plan 2</button>
+                        </form>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -27,6 +49,16 @@
     <section id="my-workouts">
         <h2>My Workouts</h2>
         <ul>
+            <h3>Plan from left side chosen: {{ plan+1 }}</h3>
+            <form action="/rate_workout" method="post">
+                <label id="rating-text">Rate this workout plan (from 0 to 5):</label>
+                <input id="rating-input" type="number" name="rating" min="0" max="5" required>
+
+                <input type="hidden" name="plan" value="{{ plan }}">
+                <input type="hidden" name="is_user_workout" value="true">
+
+                <button class="choose-button" type="submit">Submit Rating</button>
+            </form>
             {% for workout in user_workouts %}
                 <li>
                     <strong>Workout Name:</strong> {{ workout.workout_name }}
@@ -43,12 +75,22 @@
         <h2>Workouts from other users:</h2>
         <ul>
             {% for workout in all_workouts %}
-                <strong>Workout Name:</strong> {{ workout.workout_name }}
-                <ul>
-                    {% for exercise in workout.exercises %}
-                        <li>{{ exercise }}</li>
-                    {% endfor %}
-                </ul>
+                <li>
+                    <strong>Workout Name:</strong> {{ workout.workout_name }}
+                    <ul>
+                        {% for exercise in workout.exercises %}
+                            <li>{{ exercise }}</li>
+                        {% endfor %}
+                    </ul>
+                    <p>Average Rating: {{ workout.average_rating }}</p>
+                    <form action="/rate_workout" method="post">
+                        <label id="rating-text">Rate this workout (from 0 to 5):</label>
+                        <input id="rating-input" type="number" name="rating" min="0" max="5" required>
+                        <input type="hidden" name="plan" value="{{ workout.id }}">
+                        <input type="hidden" name="is_user_workout" value="false">
+                        <button class="choose-button" type="submit">Submit Rating</button>
+                    </form>
+                </li>
             {% endfor %}
         </ul>
     </section>
