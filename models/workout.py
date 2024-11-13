@@ -1,12 +1,13 @@
 import json
 
 class Workout:
-    def __init__(self, id, username=None, workout_name=None, exercises=None, users=None, ratings=None, **kwargs):
+    def __init__(self, id, username=None, workout_name=None, exercises=None, users=None, type=None, ratings=None, **kwargs):
         self.id = id
         self.username = username
         self.workout_name = workout_name
         self.exercises = exercises or []
         self.users = users or []
+        self.type = type
         self.ratings = ratings if isinstance(ratings, list) and all(isinstance(r, dict) for r in ratings) else []
         # Handle any additional attributes from kwargs if needed
         for key, value in kwargs.items():
@@ -24,14 +25,19 @@ class Workout:
         try:
             with open('workouts.json') as file:
                 data = json.load(file)
-                return [cls(**workout) for workout in data]
+                return [WorkoutFactory.create_workout(workout) for workout in data]
         except (FileNotFoundError, json.JSONDecodeError):
             return []
 
     @classmethod
     def save_all(cls, workouts):
         with open('workouts.json', 'w') as file:
-            json.dump([workout.__dict__ for workout in workouts], file, indent=4)
+            workout_data = []
+            for workout in workouts:
+                data = workout.__dict__.copy()
+                data['type'] = workout.type  # Inclua o tipo ao salvar
+                workout_data.append(data)
+            json.dump(workout_data, file, indent=4)
 
     @classmethod
     def find_by_id(cls, workout_id):
@@ -89,3 +95,35 @@ class Workout:
         self.ratings = [r for r in self.ratings if r['username'] != username]
         # Adiciona a nova avaliação
         self.ratings.append({'username': username, 'rating': rating})
+
+class PreMadeWorkout(Workout):
+    def __init__(self, id, workout_name, exercises=None, users=None, ratings=None):
+        super().__init__(id, workout_name=workout_name, exercises=exercises, users=users, ratings=ratings)
+        self.type = 'pre_made'
+
+class CustomWorkout(Workout):
+    def __init__(self, id, username, workout_name, exercises=None, ratings=None):
+        super().__init__(id, username=username, workout_name=workout_name, exercises=exercises, ratings=ratings)
+        self.type = 'custom'
+
+class WorkoutFactory:
+    @staticmethod
+    def create_workout(workout_data):
+        if workout_data.get('type') == 'pre_made':
+            return PreMadeWorkout(
+                id=workout_data['id'],
+                workout_name=workout_data['workout_name'],
+                exercises=workout_data.get('exercises', []),
+                users=workout_data.get('users', []),
+                ratings=workout_data.get('ratings', [])
+            )
+        elif workout_data.get('type') == 'custom':
+            return CustomWorkout(
+                id=workout_data['id'],
+                username=workout_data['username'],
+                workout_name=workout_data['workout_name'],
+                exercises=workout_data.get('exercises', []),
+                ratings=workout_data.get('ratings', [])
+            )
+        else:
+            raise ValueError("Invalid workout type specified.")

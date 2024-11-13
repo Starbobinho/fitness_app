@@ -1,6 +1,14 @@
 # fitness_app
 Web app to track your evolution and organize workouts from gym
 
+In this app i tried to implement 3 design patterns in differents models.
+
+In workout.py was implemented the Factory Method pattern.
+
+In user.py was implemented the Facade Method pattern.
+
+In goals.py was implemented the Template Method pattern.
+
 To install into your machine just clone the repository with:
 
 git clone https://github.com/Starbobinho/fitness_app
@@ -13,7 +21,7 @@ And use the command:
 
 flask run
 
-If by anything goes wrong, delete the venv in your machine and use the following command line:
+If by anything goes wrong, delete the venv in your machine, create a new one and use the following commands line:
 
 pip install Flask
 

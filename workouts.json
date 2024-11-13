@@ -46,13 +46,17 @@
             ]
         ],
         "users": [
-            "r",
-            "teste"
+            "rob1801"
         ],
+        "type": "pre_made",
         "ratings": [
             {
                 "username": "rob1801",
                 "rating": 4
+            },
+            {
+                "username": "a",
+                "rating": 3
             }
         ]
     },
@@ -97,9 +101,8 @@
                 "Rear Delt Flyes"
             ]
         ],
-        "users": [
-            "rob1801"
-        ],
+        "users": [],
+        "type": "pre_made",
         "ratings": [
             {
                 "username": "rob1801",
@@ -117,17 +120,22 @@
             "Cadeira extensora",
             "Leg press",
             "Panturrilha sentado",
-            "Panturrilha em p\u00e9"
+            "Panturrilha em p\u00c3\u00a9"
         ],
         "users": [],
+        "type": "custom",
         "ratings": [
-            {
-                "username": "rob1801",
-                "rating": 4
-            },
             {
                 "username": "r",
                 "rating": 2
+            },
+            {
+                "username": "a",
+                "rating": 2
+            },
+            {
+                "username": "rob1801",
+                "rating": 5
             }
         ]
     },
@@ -143,13 +151,34 @@
             "Crossover"
         ],
         "users": [],
+        "type": "custom",
+        "ratings": [
+            {
+                "username": "r",
+                "rating": 5
+            },
+            {
+                "username": "rob1801",
+                "rating": 3
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "username": "teste",
+        "workout_name": "Costas",
+        "exercises": [
+            "Puxada alta pegada aberta",
+            "Puxada alta tri\u00e2ngulo",
+            "Remada hammer",
+            "Remada baixa tri\u00e2ngulo",
+            "Remada alta"
+        ],
+        "users": [],
+        "type": "custom",
         "ratings": [
             {
                 "username": "rob1801",
-                "rating": 4
-            },
-            {
-                "username": "r",
                 "rating": 5
             }
         ]
