@@ -1,14 +1,7 @@
 import json
+from abc import ABC, abstractmethod
 
-class Goal:
-    def __init__(self, goal_id, user_id, title, description, deadline, status="in progress"):
-        self.goal_id = goal_id
-        self.user_id = user_id
-        self.title = title
-        self.description = description
-        self.deadline = deadline
-        self.status = status
-
+class GoalManager(ABC):
     @classmethod
     def load_goals(cls):
         try:
@@ -23,30 +16,38 @@ class Goal:
             json.dump(goals_data, f, indent=4)
 
     @classmethod
-    def add_goal(cls, user_id, title, description, deadline):
+    def process_goal(cls, user_id, **kwargs):
         goals_data = cls.load_goals()
+        result = cls._process(goals_data, user_id, **kwargs)
+        cls.save_goals(goals_data)
+        return result
 
+    @abstractmethod
+    def _process(cls, goals_data, user_id, **kwargs):
+        pass
+
+class AddGoal(GoalManager):
+    @classmethod
+    def _process(cls, goals_data, user_id, title, description, deadline):
         new_goal_id = len(goals_data.get(user_id, [])) + 1
-        new_goal = cls(
-            goal_id=new_goal_id,
-            user_id=user_id,
-            title=title,
-            description=description,
-            deadline=deadline
-        )
+        new_goal = {
+            "goal_id": new_goal_id,
+            "user_id": user_id,
+            "title": title,
+            "description": description,
+            "deadline": deadline,
+            "status": "in progress"
+        }
 
         if user_id not in goals_data:
             goals_data[user_id] = []
-
-        goals_data[user_id].append(new_goal.__dict__)
-        cls.save_goals(goals_data)
+        goals_data[user_id].append(new_goal)
         return new_goal
 
+class EditGoal(GoalManager):
     @classmethod
-    def edit_goal(cls, user_id, goal_id, title=None, description=None, deadline=None, status=None):
-        goals_data = cls.load_goals()
+    def _process(cls, goals_data, user_id, goal_id, title=None, description=None, deadline=None, status=None):
         user_goals = goals_data.get(user_id, [])
-
         for goal in user_goals:
             if goal['goal_id'] == goal_id:
                 if title:
@@ -57,17 +58,12 @@ class Goal:
                     goal['deadline'] = deadline
                 if status:
                     goal['status'] = status
-
-                cls.save_goals(goals_data)
                 return goal
         return None
 
+class RemoveGoal(GoalManager):
     @classmethod
-    def remove_goal(cls, user_id, goal_id):
-        goals_data = cls.load_goals()
+    def _process(cls, goals_data, user_id, goal_id):
         user_goals = goals_data.get(user_id, [])
-
         goals_data[user_id] = [goal for goal in user_goals if goal['goal_id'] != goal_id]
-
-        cls.save_goals(goals_data)
         return True

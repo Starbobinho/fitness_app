@@ -13,5 +13,15 @@
         "username": "teste",
         "password": "teste",
         "rated": []
+    },
+    {
+        "username": "a",
+        "password": "a",
+        "rated": []
+    },
+    {
+        "username": "j",
+        "password": "j",
+        "rated": []
     }
 ]

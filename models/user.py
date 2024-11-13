@@ -6,47 +6,46 @@ class User:
         self.password = password
         self.rated = rated or []
 
-    @classmethod
-    def load_all(cls):
+class UserFacade:
+    def __init__(self, file_path='users.json'):
+        self.file_path = file_path
+
+    def load_all_users(self):
         try:
-            with open('users.json') as file:
+            with open(self.file_path) as file:
                 data = json.load(file)
-                return [cls(user['username'], user['password']) for user in data]
+                return [User(user['username'], user['password'], user.get('rated', [])) for user in data]
         except (FileNotFoundError, json.JSONDecodeError):
             return []
 
-    @classmethod
-    def save_all(cls, users):
-        with open('users.json', 'w') as file:
+    def save_all_users(self, users):
+        with open(self.file_path, 'w') as file:
             json.dump([user.__dict__ for user in users], file, indent=4)
 
-    @classmethod
-    def find_by_username(cls, username):
-        users = cls.load_all()
+    def find_user_by_username(self, username):
+        users = self.load_all_users()
         for user in users:
             if user.username == username:
                 return user
         return None
 
-    @classmethod
-    def add_user(cls, new_user):
-        users = cls.load_all()
-        if cls.find_by_username(new_user.username):
-            return False
+    def add_user(self, new_user):
+        users = self.load_all_users()
+        if self.find_user_by_username(new_user.username):
+            return False  # User already exists
         users.append(new_user)
-        cls.save_all(users)
+        self.save_all_users(users)
         return True
-    
-    @classmethod
-    def add_rating(cls, username, workout_id, rating):
-        users = cls.load_all()
-        user = cls.find_by_username(username)
+
+    def add_rating(self, username, workout_id, rating):
+        users = self.load_all_users()
+        user = self.find_user_by_username(username)
         
         if user:
             # Remove any existing rating for the workout_id
             user.rated = [r for r in user.rated if r['id'] != workout_id]
             # Add the new rating
             user.rated.append({'id': workout_id, 'rating': rating})
-            cls.save_all(users)
+            self.save_all_users(users)
             return True
         return False

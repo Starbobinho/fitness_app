@@ -49,16 +49,7 @@
     <section id="my-workouts">
         <h2>My Workouts</h2>
         <ul>
-            <h3>Plan from left side chosen: {{ plan+1 }}</h3>
-            <form action="/rate_workout" method="post">
-                <label id="rating-text">Rate this workout plan (from 0 to 5):</label>
-                <input id="rating-input" type="number" name="rating" min="0" max="5" required>
-
-                <input type="hidden" name="plan" value="{{ plan }}">
-                <input type="hidden" name="is_user_workout" value="true">
-
-                <button class="choose-button" type="submit">Submit Rating</button>
-            </form>
+            <h3>Plan from left side chosen: {{ plan }}</h3>
             {% for workout in user_workouts %}
                 <li>
                     <strong>Workout Name:</strong> {{ workout.workout_name }}

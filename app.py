@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect, request, session
-from models.user import User
+from models.user import User, UserFacade
 from models.workout import Workout
 from models.diet import Diet
-from models.goals import Goal
+from models.goals import GoalManager, AddGoal, EditGoal, RemoveGoal
 from models.post import Post
 import requests
 
@@ -10,6 +10,8 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'starbobinho'
 
 api_key = 'iKAAv5nhVv9vmVU2haYAjRMUwhWYfR4C6hoGyja7'
+
+user_facade = UserFacade()
 
 @app.route('/')
 def home():
@@ -25,26 +27,27 @@ def register():
         confirmation = request.form.get('confirmation')
 
         if confirmation != password:
-            return render_template('error.html', error='Passwords different')
+            return render_template('error.html', error='Passwords do not match')
         
         new_user = User(username, password, [])
-        if not User.add_user(new_user):
+        if not user_facade.add_user(new_user):  # Usando o método da UserFacade
             return render_template('error.html', error='Username already in use')
 
         return redirect('/')
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    username = request.form.get('user')
-    password = request.form.get('password')
+    if request.method == 'POST':
+        username = request.form.get('user')
+        password = request.form.get('password')
 
-    user = User.find_by_username(username)
-    if user and user.password == password:
-        session['username'] = username
-        session['user_id'] = username
-        return redirect('/user_screen')
+        user = user_facade.find_user_by_username(username)  # Usando o método da UserFacade
+        if user and user.password == password:
+            session['username'] = username
+            session['user_id'] = username
+            return redirect('/user_screen')
     
-    return render_template('error.html', error='Username incorrect/not found')
+    return render_template('error.html', error='Incorrect username or password')
 
 @app.route('/user_screen', methods=['POST', 'GET'])
 def user_screen():
@@ -66,13 +69,16 @@ def user_screen():
     user_workouts = [workout for workout in workouts if workout.username == username]
 
     all_workouts = [workout for workout in workouts if workout.id > 1]
-
+    #in [u.username for u in workouts if u.id in [0, 1]]
     #print(f"WORKOUTS_TESTS:{workouts_tests[2]}\n, USER_WORKOUTS:{user_workouts}\n, PRE_MADE_WORKOUTS{pre_made_workouts}")
+    print(f"{workouts[0].workout_name} {workouts[0].users}")
     if method == 'GET':
-        if username in [u.username for u in workouts if u.id in [0, 1]]:
+        if username in workouts[0].users:
             return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan=1, logged_in=True)
-        else:
+        elif username in workouts[1].users:
             return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan=2, logged_in=True)
+        else:
+            return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan="Not chosen yet", logged_in=True)
     
     if method == 'POST':
         button_clicked = int(request.form.get('button'))
@@ -98,7 +104,7 @@ def user_screen():
 
         # Salva a lista completa de treinos com as modificações
         Workout.save_all(workouts)
-        return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan=workout_id, logged_in=True)
+        return render_template('user_screen.html', pre_made_workouts=pre_made_workouts, user_workouts=user_workouts, all_workouts=all_workouts, plan=workout_id+1, logged_in=True)
 
 @app.route('/logout')
 def logout():
@@ -123,7 +129,8 @@ def make_workout():
             id=Workout.generate_new_id(),
             username=username,
             workout_name=workout_name,
-            exercises=exercises_list
+            exercises=exercises_list,
+            type='custom'
         )
         workouts = Workout.load_all()
         workouts.append(new_workout)
@@ -290,14 +297,14 @@ def goals():
         goal_id = request.form.get('goal_id')
 
         if action == 'add':
-            Goal.add_goal(
+            AddGoal.process_goal(
                 user_id=user_id,
                 title=request.form['title'],
                 description=request.form['description'],
                 deadline=request.form['deadline']
             )
         elif action == 'edit' and goal_id:
-            Goal.edit_goal(
+            EditGoal.process_goal(
                 user_id=user_id,
                 goal_id=int(goal_id),
                 title=request.form.get('title'),
@@ -306,13 +313,12 @@ def goals():
                 status=request.form.get('status')
             )
         elif action == 'delete' and goal_id:
-            Goal.remove_goal(user_id=user_id, goal_id=int(goal_id))
+            RemoveGoal.process_goal(user_id=user_id, goal_id=int(goal_id))
 
         return redirect('/goals')
 
-    goals_data = Goal.load_goals()
-    user_goals = goals_data.get(user_id, [])
-    return render_template('goals.html', goals=user_goals, logged_in=True)
+    goals=GoalManager.load_goals().get(user_id, [])
+    return render_template('goals.html', goals=goals, logged_in=True)
 
 @app.route('/rate_workout', methods=['POST'])
 def rate_workout():
@@ -335,7 +341,8 @@ def rate_workout():
         Workout.save_all(workouts)
 
         # Atualiza a avaliação do usuário
-        User.add_rating(username, workout_id, rating)
+        user_facade = UserFacade()  # Instancia UserFacade
+        user_facade.add_rating(username=username, workout_id=workout_id, rating=rating)
 
     return redirect('/user_screen')
 
